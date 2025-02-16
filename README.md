@@ -48,14 +48,6 @@ This will launch the application in your browser where you can start transformin
 
 ---
 
-## 📷 Screenshots
-### 🔹 Original Image vs Transformed Image
-![Demo](https://via.placeholder.com/800x400?text=Add+Screenshots+Here)
-
-Add real screenshots here for better visualization.
-
----
-
 ## 🛠️ Technologies Used
 - **Python** - The core programming language.
 - **Streamlit** - For building the interactive UI.
