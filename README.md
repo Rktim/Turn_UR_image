@@ -2,7 +2,8 @@
 
 **Turn UR Image** is a powerful and easy-to-use image transformation web app that allows users to upload an image and apply different artistic effects. Built with **Streamlit**, this app provides a seamless and interactive experience for enhancing images with just a few clicks.
 
-🚀 **Live Demo:** [Turn UR Image](https://turnurimage.streamlit.app/)
+🚀 **Live Demo:** [![Try It](https://img.shields.io/badge/Turn%20UR-Image%20Here-green?style=for-the-badge)](https://turnurimage.streamlit.app/)
+
 
 ---
 
