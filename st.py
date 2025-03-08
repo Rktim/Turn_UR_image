@@ -21,9 +21,10 @@ def binary_effect(img):
 def watercolor_effect(img):
     img_color = cv2.edgePreservingFilter(img, flags=1, sigma_s=100, sigma_r=0.4)
     img_cartoon = cv2.stylization(img_color, sigma_s=150, sigma_r=0.25)
+    img_cartoon = cv2.cvtColor(img_cartoon, cv2.COLOR_BGR2RGB)
     return img_cartoon
 
-st.title("Turn UR Image 🖼️")
+st.title("Turn UR Image 🎨")
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 if "effect" not in st.session_state:
