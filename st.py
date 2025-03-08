@@ -6,8 +6,10 @@ import io
 
 def sketch_effect(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5, 5), 2)
-    return cv2.Canny(blur, 50, 150)
+    inv_gray = cv2.bitwise_not(gray)
+    blur = cv2.GaussianBlur(inv_gray, (21, 21), 0)
+    sketch = cv2.divide(gray, 255 - blur, scale=256)
+    return sketch
 
 def binary_effect(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -15,9 +17,11 @@ def binary_effect(img):
     return binary
 
 def watercolor_effect(img):
-    img_blur = cv2.medianBlur(img, 7)
-    img_color = cv2.edgePreservingFilter(img_blur, flags=1, sigma_s=60, sigma_r=0.4)
-    img_cartoon = cv2.stylization(img_color, sigma_s=150, sigma_r=0.25)
+    img_color = cv2.bilateralFilter(img, 9, 300, 300)
+    img_edge = cv2.adaptiveThreshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 255,
+                                     cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9)
+    img_cartoon = cv2.stylization(img_color, sigma_s=100, sigma_r=0.3)
+    img_cartoon = cv2.cvtColor(img_cartoon, cv2.COLOR_BGR2RGB)
     return img_cartoon
 
 st.title("Turn UR Image 🖼️")
@@ -49,7 +53,7 @@ if uploaded_file:
     
     if result is not None:
         st.image(result, caption=f"{st.session_state.effect} Effect", use_container_width=True)
-        result_pil = Image.fromarray(result) if result.ndim == 2 else Image.fromarray(cv2.cvtColor(result, cv2.COLOR_BGR2RGB))
+        result_pil = Image.fromarray(result) if result.ndim == 2 else Image.fromarray(result)
         buf = io.BytesIO()
         result_pil.save(buf, format="PNG")
         byte_im = buf.getvalue()
