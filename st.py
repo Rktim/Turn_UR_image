@@ -11,15 +11,14 @@ def sketch_effect(img):
 
 def binary_effect(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)[1]
+    _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return binary
 
 def watercolor_effect(img):
     img_blur = cv2.medianBlur(img, 7)
-    edge = cv2.adaptiveThreshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 255,
-                                 cv2.ADAPTIVE_THRESH_MEAN_C,
-                                 cv2.THRESH_BINARY, 9, 9)
-    img_color = cv2.bilateralFilter(img, 9, 300, 300)
-    return cv2.bitwise_and(img_color, img_color, mask=edge)
+    img_color = cv2.edgePreservingFilter(img_blur, flags=1, sigma_s=60, sigma_r=0.4)
+    img_cartoon = cv2.stylization(img_color, sigma_s=150, sigma_r=0.25)
+    return img_cartoon
 
 st.title("Turn UR Image 🖼️")
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
